@@ -90,6 +90,6 @@ for i, chunk in enumerate(chunks):
 
 ### License
 
-Specify your project license here (e.g., MIT).
+MIT.
 
 
