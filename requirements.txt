@@ -1,0 +1,25 @@
+# For Data Handling
+pandas
+
+# For Web Scraping
+selenium
+webdriver-manager
+
+# For Data Analysis & Visualization
+matplotlib
+seaborn
+wordcloud
+scipy
+
+# For AI Backend & Modeling
+fastapi
+uvicorn
+scikit-learn
+sentence-transformers
+
+# For Image Transformers
+transformers
+Pillow
+
+# Choose one Deep Learning Framework
+torch  # For PyTorch
