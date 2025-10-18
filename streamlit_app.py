@@ -1,6 +1,7 @@
 import streamlit as st
 import requests
 import pandas as pd
+import os
 
 # --- Page Configuration ---
 st.set_page_config(
@@ -160,7 +161,9 @@ st.markdown("""
 with st.sidebar:
     st.image("https://placehold.co/400x150/0068c9/FFFFFF?text=GenAI+Fashion+Hub", use_container_width=True) # FIX: use_container_width
     st.header("API Configuration")
-    api_base = st.text_input("API Base URL", value="http://127.0.0.1:8001")
+    # Use environment variable for production, fallback to local for development
+    default_api_url = os.getenv("API_BASE_URL", "http://127.0.0.1:8001")
+    api_base = st.text_input("API Base URL", value=default_api_url)
     
     st.info("This app demonstrates a GenAI-powered fashion retail system. Use the sections below to interact with the AI models.")
     st.markdown("---")
