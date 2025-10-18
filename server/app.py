@@ -29,23 +29,62 @@ def load_models():
     """Load all ML models and databases when the API starts."""
     global fast_models, original_model, rec_collection, embedding_model
 
+    print("Starting model loading process...")
+    
+    # Check if artifacts directory exists
+    if not os.path.exists('artifacts'):
+        print("Artifacts directory not found, creating...")
+        os.makedirs('artifacts', exist_ok=True)
+
     # Load fast multi-model system for price prediction
     FAST_MODEL_PATH = os.path.join('artifacts', 'fast_price_models_api.joblib')
+    print(f"Looking for fast models at: {FAST_MODEL_PATH}")
+    
     if os.path.exists(FAST_MODEL_PATH):
         try:
             fast_models = joblib.load(FAST_MODEL_PATH)
             print("Fast multi-model system loaded successfully")
         except Exception as e:
             print(f"Could not load fast models: {e}")
+    else:
+        print(f"Fast model file not found at {FAST_MODEL_PATH}")
 
     # Fallback to original single model if fast models not available
-    ORIGINAL_MODEL_PATH = os.path.join('artifacts', 'price_model.joblib')
+    ORIGINAL_MODEL_PATH = os.path.join('artifacts', 'price_model_improved.joblib')
+    print(f"Looking for original model at: {ORIGINAL_MODEL_PATH}")
+    
     if not fast_models and os.path.exists(ORIGINAL_MODEL_PATH):
         try:
             original_model = joblib.load(ORIGINAL_MODEL_PATH)['pipeline']
             print("Original model loaded as fallback")
         except Exception as e:
             print(f"Could not load original model: {e}")
+    else:
+        print(f"Original model file not found at {ORIGINAL_MODEL_PATH}")
+    
+    # Final fallback to lightweight model
+    FALLBACK_MODEL_PATH = os.path.join('artifacts', 'fallback_model.joblib')
+    print(f"Looking for fallback model at: {FALLBACK_MODEL_PATH}")
+    
+    if not fast_models and not original_model and os.path.exists(FALLBACK_MODEL_PATH):
+        try:
+            original_model = joblib.load(FALLBACK_MODEL_PATH)['pipeline']
+            print("Fallback model loaded successfully")
+        except Exception as e:
+            print(f"Could not load fallback model: {e}")
+    else:
+        print(f"Fallback model file not found at {FALLBACK_MODEL_PATH}")
+    
+    # List all files in artifacts directory for debugging
+    if os.path.exists('artifacts'):
+        print("Files in artifacts directory:")
+        for file in os.listdir('artifacts'):
+            file_path = os.path.join('artifacts', file)
+            size = os.path.getsize(file_path) if os.path.isfile(file_path) else 0
+            print(f"  - {file} ({size} bytes)")
+    
+    if not fast_models and not original_model:
+        print("WARNING: No price prediction models loaded!")
 
     # Load ChromaDB and Sentence Transformer for recommendations
     if CHROMADB_AVAILABLE:
