@@ -224,7 +224,10 @@ if st.button("🔍 Get Recommendations"):
             payload = {"query": query, "k": k}
             r = requests.post(f"{api_base}/recommend_products", json=payload)
             if r.ok:
-                results = r.json().get('results', [])
+                try:
+                    results = r.json().get('results', [])
+                except:
+                    results = []
                 if not results:
                     st.warning("No similar items found. Try a different query.")
                 else:
@@ -263,7 +266,11 @@ if st.button("🔍 Get Recommendations"):
                             
                             st.markdown("---")
             else:
-                st.error(f"Error from API: {r.json().get('detail', r.text)}")
+                try:
+                    error_detail = r.json().get('detail', r.text)
+                except:
+                    error_detail = r.text
+                st.error(f"Error from API: {error_detail}")
         except requests.exceptions.ConnectionError:
             st.error("Connection failed. Please ensure the FastAPI server is running.")
 
@@ -311,7 +318,11 @@ with st.form("price_form"):
                 r = requests.post(f"{api_base}/predict_price", json=payload)
                 
                 if r.ok:
-                    result = r.json()
+                    try:
+                        result = r.json()
+                    except:
+                        st.error("Invalid response from API")
+                        return
                     
                     # Main prediction result with large display
                     st.markdown("---")
@@ -343,7 +354,15 @@ with st.form("price_form"):
                     else:
                         st.info("👕 **Standard Apparel Model**: For regular clothing and accessories")
                 else:
-                    st.error(f"Error from API: {r.json().get('detail', r.text)}")
+                    try:
+                        error_detail = r.json().get('detail', r.text)
+                    except:
+                        error_detail = r.text
+                    st.error(f"Error from API: {error_detail}")
             except requests.exceptions.ConnectionError:
                 st.error("Connection failed. Please ensure the FastAPI server is running.")
+            except requests.exceptions.JSONDecodeError:
+                st.error(f"API returned invalid response: {r.text}")
+            except Exception as e:
+                st.error(f"Unexpected error: {str(e)}")
 
