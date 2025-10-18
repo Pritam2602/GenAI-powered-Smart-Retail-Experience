@@ -322,37 +322,36 @@ with st.form("price_form"):
                         result = r.json()
                     except:
                         st.error("Invalid response from API")
-                        return
-                    
-                    # Main prediction result with large display
-                    st.markdown("---")
-                    col1, col2 = st.columns([2, 1])
-                    with col1:
-                        st.markdown(f"### 🎯 Predicted Price: **₹{result.get('predicted_price', 'N/A'):,.2f}**")
-                    with col2:
-                        st.markdown("### 🎯 Confidence: **High**")
-                    
-                    # Model information in a modern card layout
-                    st.markdown("### 📊 Model Information")
-                    col1, col2, col3 = st.columns(3)
-                    with col1:
-                        st.metric("Product Type", result.get('product_type', 'N/A').title())
-                    with col2:
-                        st.metric("Model Type", result.get('model_type', 'N/A').replace('_', ' ').title())
-                    with col3:
-                        confidence = "High" if result.get('product_type') in ['jewelry', 'watches'] else "Medium"
-                        st.metric("Confidence", confidence)
-                    
-                    # Show which specialized model was used
-                    product_type = result.get('product_type', 'N/A')
-                    if product_type == 'jewelry':
-                        st.info("💍 **Jewelry Model**: Optimized for gold, silver, diamonds, and precious stones")
-                    elif product_type == 'watches':
-                        st.info("⌚ **Watch Model**: Specialized for timepieces, movements, and luxury brands")
-                    elif product_type == 'luxury_apparel':
-                        st.info("👑 **Luxury Apparel Model**: For designer, premium, and high-end fashion items")
                     else:
-                        st.info("👕 **Standard Apparel Model**: For regular clothing and accessories")
+                        # Main prediction result with large display
+                        st.markdown("---")
+                        col1, col2 = st.columns([2, 1])
+                        with col1:
+                            st.markdown(f"### 🎯 Predicted Price: **₹{result.get('predicted_price', 'N/A'):,.2f}**")
+                        with col2:
+                            st.markdown("### 🎯 Confidence: **High**")
+                        
+                        # Model information in a modern card layout
+                        st.markdown("### 📊 Model Information")
+                        col1, col2, col3 = st.columns(3)
+                        with col1:
+                            st.metric("Product Type", result.get('product_type', 'N/A').title())
+                        with col2:
+                            st.metric("Model Type", result.get('model_type', 'N/A').replace('_', ' ').title())
+                        with col3:
+                            confidence = "High" if result.get('product_type') in ['jewelry', 'watches'] else "Medium"
+                            st.metric("Confidence", confidence)
+                        
+                        # Show which specialized model was used
+                        product_type = result.get('product_type', 'N/A')
+                        if product_type == 'jewelry':
+                            st.info("💍 **Jewelry Model**: Optimized for gold, silver, diamonds, and precious stones")
+                        elif product_type == 'watches':
+                            st.info("⌚ **Watch Model**: Specialized for timepieces, movements, and luxury brands")
+                        elif product_type == 'luxury_apparel':
+                            st.info("👑 **Luxury Apparel Model**: For designer, premium, and high-end fashion items")
+                        else:
+                            st.info("👕 **Standard Apparel Model**: For regular clothing and accessories")
                 else:
                     try:
                         error_detail = r.json().get('detail', r.text)
