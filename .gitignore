@@ -11,8 +11,6 @@ venv/
 *.csv
 *.parquet
 
-# Ignore trained model artifacts
-artifacts/
 
 # Ignore the ChromaDB local database
 chroma_db/
