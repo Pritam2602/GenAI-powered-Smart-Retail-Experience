@@ -192,10 +192,10 @@ async def startup_event():
     """
     # Ensure directories exist
     settings.ensure_directories()
-    logger.info(f"🚀 {settings.API_TITLE} v{settings.API_VERSION} starting up...")
-    logger.info(f"📁 Artifacts directory: {settings.ARTIFACTS_DIR}")
-    logger.info(f"📁 ChromaDB directory: {settings.CHROMA_DB_DIR}")
-    logger.info("✅ Application startup complete")
+    logger.info(f" {settings.API_TITLE} v{settings.API_VERSION} starting up...")
+    logger.info(f" Artifacts directory: {settings.ARTIFACTS_DIR}")
+    logger.info(f" ChromaDB directory: {settings.CHROMA_DB_DIR}")
+    logger.info(" Application startup complete")
 
 # Shutdown event
 @app.on_event("shutdown")
@@ -206,8 +206,8 @@ async def shutdown_event():
     This function is called when the application shuts down.
     Perform any necessary cleanup tasks here.
     """
-    logger.info("🛑 Application shutting down...")
-    logger.info("✅ Application shutdown complete")
+    logger.info(" Application shutting down...")
+    logger.info(" Application shutdown complete")
 
 if __name__ == "__main__":
     # Get port from environment variable or default to 8001
